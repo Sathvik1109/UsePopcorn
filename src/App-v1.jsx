@@ -1,5 +1,4 @@
-import { func } from "prop-types";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const tempMovieData = [
   {
@@ -51,56 +50,20 @@ const tempWatchedData = [
 const average = (arr) =>
   arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
 
-const KEY = "33b34ffc";
-
 // App Component
 export default function App() {
-  const [query, setQuery] = useState("");
-
-  const [movies, setMovies] = useState([]);
-  const [watched, setWatched] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
-  const tempQuery = "interstellar";
-
-  useEffect(() => {});
-
-  useEffect(function () {
-    async function fetchMovies() {
-      try {
-        setIsLoading(true);
-        const res = await fetch(
-          `http://www.omdbapi.com/?apikey=${KEY}&s=${tempQuery}`,
-        );
-
-        if (!res.ok)
-          throw new Error("Something went wrong with fetching movies");
-
-        const data = await res.json();
-        if (data.Response === "False") throw new Error("Movie Not Found");
-        setMovies(data.Search);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-    fetchMovies();
-  }, []);
-
+  const [movies, setMovies] = useState(tempMovieData);
+  const [watched, setWatched] = useState(tempWatchedData);
   return (
     <>
       <Navbar>
         <Logo />
-        <Search query={query} setQuery={setQuery} />
+        <Search />
         <NumResults movies={movies} />
       </Navbar>
       <Main>
-        {/* <Box>{isLoading ? <Loader /> : <MoviesList movies={movies} />}</Box> */}
         <Box>
-          {isLoading && <Loader />}
-          {!isLoading && !error && <MoviesList movies={movies} />}
-          {error && <ErrorMessage message={error} />}
+          <MoviesList movies={movies} />
         </Box>
         {/* <WatchedMoviesBox /> */}
         <Box watched={watched}>
@@ -123,16 +86,6 @@ function Button({ isOpen, setIsOpen }) {
   );
 }
 
-// Loader while data is loading
-function Loader() {
-  return <p className="loader">Loading....</p>;
-}
-
-// Error Message if fetch fails
-function ErrorMessage({ message }) {
-  return <p className="error">{message}</p>;
-}
-
 // Navbar
 function Navbar({ children }) {
   return <nav className="nav-bar">{children}</nav>;
@@ -147,7 +100,8 @@ function Logo() {
   );
 }
 
-function Search({ query, setQuery }) {
+function Search() {
+  const [query, setQuery] = useState("");
   return (
     <input
       className="search"
