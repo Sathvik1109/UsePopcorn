@@ -51,7 +51,7 @@ export default function App() {
         setError("");
         return;
       }
-
+      handleCloseMovie();
       fetchMovies();
 
       return () => {
@@ -321,6 +321,19 @@ function MovieDetails({ onAddWatched, selectedId, onCloseMovie, watched }) {
       document.title = "usePopcorn";
     };
   }, [title]);
+
+  useEffect(() => {
+    function callBack(e) {
+      if (e.code === "Escape") {
+        onCloseMovie();
+      }
+    }
+    document.addEventListener("keydown", callBack);
+
+    () => {
+      document.removeEventListener("keydown", callBack);
+    };
+  }, [onCloseMovie]);
 
   function handleAdd() {
     const newWatchedMovie = {
