@@ -347,6 +347,8 @@ function MovieDetails({ onAddWatched, selectedId, onCloseMovie, watched }) {
     };
   }, [onCloseMovie]);
 
+  // const [avgRating, setAvgRating] = useState(0);
+
   function handleAdd() {
     const newWatchedMovie = {
       imdbID: selectedId,
@@ -360,6 +362,10 @@ function MovieDetails({ onAddWatched, selectedId, onCloseMovie, watched }) {
 
     onAddWatched(newWatchedMovie);
     onCloseMovie();
+
+    // Example that useState is async
+    // setAvgRating(Number(imdbRating));
+    // setAvgRating((prev) => (prev + userRating) / 2);
   }
 
   return (
@@ -385,6 +391,8 @@ function MovieDetails({ onAddWatched, selectedId, onCloseMovie, watched }) {
               </p>
             </div>
           </header>
+
+          {/* <p>{avgRating}</p> */}
 
           <section>
             <div className="rating">
