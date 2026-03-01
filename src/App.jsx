@@ -19,7 +19,7 @@ export default function App() {
 
   const [watched, setWatched] = useState(() => {
     const storedValue = localStorage.getItem("watched");
-    return JSON.parse(storedValue);
+    return storedValue ? JSON.parse(storedValue) : [];
   });
 
   useEffect(
@@ -341,7 +341,7 @@ function MovieDetails({ onAddWatched, selectedId, onCloseMovie, watched }) {
     }
     document.addEventListener("keydown", callBack);
 
-    () => {
+    return () => {
       document.removeEventListener("keydown", callBack);
     };
   }, [onCloseMovie]);
@@ -352,7 +352,7 @@ function MovieDetails({ onAddWatched, selectedId, onCloseMovie, watched }) {
       title,
       year,
       poster,
-      imdbRating: Number(userRating),
+      imdbRating: Number(imdbRating),
       runtime: Number(runtime.split(" ").at(0)),
       userRating,
     };
